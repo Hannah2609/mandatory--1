@@ -1,0 +1,103 @@
+// Vertex Collections (Nodes)
+
+// Users vertex
+{
+    "user_pk": "user_1",
+    "user_name": "A",
+    "user_last_name": "Aa",
+    "user_email": "a@example.com",
+    "user_password": "password1",
+    "user_created_at": 1702483200,
+    "user_deleted_at": 0,
+    "user_blocked_at": 0,
+    "user_updated_at": 0,
+    "user_verified_at": 1702483200,
+    "user_verification_key": "verification_uuid"
+}
+
+// Items vertex
+{
+    "item_pk": "item_1",
+    "item_title": "Pizza",
+    "item_price": 12.99,
+    "item_image": "dish_1.jpg",
+    "item_created_at": 1702483200,
+    "item_deleted_at": 0,
+    "item_blocked_at": 0,
+    "item_updated_at": 0
+}
+
+// Orders vertex
+{
+    "order_pk": "order_1",
+    "delivery_address": "Street 2, City B",
+    "restaurant_name": "Restaurant D",
+    "order_total_price": 32.00,
+    "order_status": "delivered",
+    "order_created_at": 1702483200
+}
+
+// Roles vertex
+{
+    "role_pk": "role_1",
+    "role_name": "admin"
+}
+
+// Vehicles vertex
+{
+    "vehicle_pk": "vehicle_1",
+    "vehicle_name": "Bicycle"
+}
+
+// Edge Collections (Relationships)
+
+// has_role edge - connects users to roles
+{
+    "_from": "users/user_1",
+    "_to": "roles/role_1",
+    "assigned_at": 1702483200
+}
+
+// has_phone edge - connects users to phone numbers
+{
+    "_from": "users/user_1",
+    "_to": "phones/phone_1",
+    "phone_number": "+4512345678"
+}
+
+// has_address edge - connects users to addresses
+{
+    "_from": "users/user_1",
+    "_to": "addresses/address_1",
+    "address_line": "Street 1, City A",
+    "postal_code": "1000",
+    "primary_address": true
+}
+
+// has_vehicle edge - connects users to vehicles
+{
+    "_from": "users/user_1",
+    "_to": "vehicles/vehicle_1"
+}
+
+// offers_items edge - connects restaurants(users) to items
+{
+    "_from": "users/user_4",
+    "_to": "items/item_1",
+    "created_at": 1702483200
+}
+
+// places_orders edge - connects users to orders
+{
+    "_from": "users/user_2",
+    "_to": "orders/order_1",
+    "created_at": 1702483200
+}
+
+// order_contains edge - connects orders to items
+{
+    "_from": "orders/order_1",
+    "_to": "items/item_1",
+    "quantity": 2,
+    "price_at_time": 12.99
+}

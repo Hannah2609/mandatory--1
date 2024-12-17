@@ -1,0 +1,53 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: db_ex_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: company
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    platform: linux/amd64
+    container_name: db_ex_phpmyadmin
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 9090:80
+    restart: unless-stopped
+
+  arangodb1:
+    image: arangodb:3.10.4
+    container_name: db_exarangodb1
+    environment:
+      - ARANGO_ROOT_PASSWORD=password
+    ports:
+      - "8529:8529"
+    volumes:
+      - arango_data1:/var/lib/arangodb3
+    restart: unless-stopped
+
+  arangodb2:
+    image: arangodb:3.10.4
+    container_name: db_exarangodb2
+    environment:
+      - ARANGO_ROOT_PASSWORD=password
+    ports:
+      - "8530:8529"
+    volumes:
+      - arango_data2:/var/lib/arangodb3
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  arango_data1:
+  arango_data2:

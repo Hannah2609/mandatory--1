@@ -1,0 +1,85 @@
+// Users Collection
+{
+    "user_pk": "user1",
+    "user_name": "A",
+    "user_last_name": "Aa",
+    "user_email": "a@example.com",
+    "user_password": "password1",
+    "user_created_at": 1702483200,
+    "user_deleted_at": 0,
+    "user_blocked_at": 0,
+    "user_updated_at": 0,
+    "user_verified_at": 1702483200,
+    "user_verification_key": "verification_uuid",
+    "phones": [
+        { "phone_number": "+4512345678" },
+        { "phone_number": "+4512567833" }
+    ],
+    
+    "addresses": [
+        {
+            "address_line": "Street 1, City A",
+            "postal_code": "1000",
+            "primary_address": true
+        }
+    ],
+    
+    "roles": [
+        {
+            "role_pk": "role1",
+            "role_name": "admin"
+        },
+        {
+            "role_pk": "role2",
+            "role_name": "restaurant"
+        }
+    ],
+    
+    "vehicles": [
+        {
+            "vehicle_pk": "vehicle1",
+            "vehicle_name": "Bicycle"
+        }
+    ],
+    "items": ["item1", "item2"],
+    "orders": ["order1", "order2"]
+}
+
+// Items Collection
+{
+    "item_pk": "item1",
+    "item_title": "Pizza",
+    "item_price": 12.99,
+    "item_image": "dish1.png",
+    "item_created_at": 1702483200,
+    "item_deleted_at": 0,
+    "item_blocked_at": 0,
+    "item_updated_at": 0
+}
+
+// Orders Collection
+{
+    "order_pk": "order1",
+    "user_pk": "user1",  
+    "delivery_address": "Street 2, City B",
+    "restaurant_name": "Restaurant D",
+    "order_total_price": 32.00,
+    "order_status": "delivered",
+    "order_created_at": 1702483200,
+    
+    // Embeded order items
+    "order_items": [
+        {
+            "item_pk": "item1",
+            "item_quantity": 2,
+            "item_price": 12.99,
+            "item_title": "Pizza"
+        },
+        {
+            "item_pk": "item2",
+            "item_quantity": 1,
+            "item_price": 9.99,
+            "item_title": "Burger"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+# User Session Example
+SET "session:user1" {
+    "user_id": "user1",
+    "name": "A",
+    "role": "customer",
+    "last_access": "1702483200"
+}
+EXPIRE "session:user1" 1800  # 30 minutes
+
+# Menu Item Caching Example
+
+SET "menu:item1" {
+    "title": "Pizza",
+    "price": 12.99,
+    "available": 1
+}
+EXPIRE "menu:item1" 1800
+

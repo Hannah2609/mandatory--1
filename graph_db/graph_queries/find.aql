@@ -1,0 +1,41 @@
+// Find all restaurants that deliver pizza by bicycle
+FOR v, e, p IN 1..2 OUTBOUND "vehicles/bicycle" has_vehicle
+    FILTER p.vertices[1].role == "restaurant"
+    FOR item IN items
+        FILTER item.user_fk == p.vertices[1].user_pk
+        FILTER CONTAINS(LOWER(item.item_title), "pizza")
+        RETURN {
+            restaurant: p.vertices[1].user_name,
+            delivery_type: "bicycle",
+            item: item.item_title
+        }
+
+// Find all orders delivered by a specific driver
+FOR v, e, p IN 1..2 OUTBOUND "users/driver123" has_order
+    RETURN {
+        order_id: v._key,
+        delivery_address: v.delivery_address,
+        total_price: v.order_total_price,
+        status: v.order_status
+    }
+
+// Find mutual delivery areas between drivers
+FOR driver1 IN users
+    FILTER driver1.role == "partner"
+    FOR driver2 IN users
+        FILTER driver2.role == "partner"
+        FILTER driver1 != driver2
+        LET common_areas = (
+            FOR a1 IN has_address
+                FILTER a1._from == driver1._id
+                FOR a2 IN has_address
+                    FILTER a2._from == driver2._id
+                    FILTER a1.postal_code == a2.postal_code
+                    RETURN a1.postal_code
+        )
+        FILTER LENGTH(common_areas) > 0
+        RETURN {
+            driver1: driver1.user_name,
+            driver2: driver2.user_name,
+            shared_areas: common_areas
+        }

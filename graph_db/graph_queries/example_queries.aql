@@ -1,0 +1,75 @@
+// sample vertices (document in collection)
+FOR user IN [
+    {
+        "user_name": "A",
+        "user_last_name": "Aa",
+        "user_email": "a@example.com",
+    }
+]
+INSERT user INTO users
+
+// sample edge (document in edge collection)
+INSERT {
+    "_from": "users/user_1",
+    "_to": "roles/role_1",
+    "assigned_at": DATE_NOW()
+} INTO has_role
+
+
+// shows order history of user 2
+FOR user IN users
+    FILTER user._key == "user_2"
+    FOR order IN 1..1 OUTBOUND user has_orders
+        LET order_items = (
+            FOR item IN 1..1 OUTBOUND order contain_items
+                FOR restaurant IN 1..1 INBOUND item offers_items
+                RETURN {
+                    restaurant_name: restaurant.user_name,
+                    item_name: item.item_title
+                }
+        )
+        RETURN {
+            customer: user.user_name,
+            total_price: order.order_total_price,
+            items_quantity: LENGTH(order_items),
+            from_restaurant: order_items[0].restaurant_name,
+            items: order_items[*].item_name
+        }
+
+
+
+// Find all users with restaurant role and their orders
+FOR user IN users
+    LET restaurant_role = (
+        FOR role IN 1..1 OUTBOUND user has_role
+        FILTER role.role_name == "Restaurant"
+        RETURN role
+    )
+    FILTER LENGTH(restaurant_role) > 0
+    
+    LET restaurant_items = (
+        FOR item IN 1..1 OUTBOUND user offers_items
+            LET orders = (
+                FOR order IN 1..1 INBOUND item contain_items
+                    FOR customer IN 1..1 INBOUND order has_orders
+                    RETURN {
+                        order_id: order._key,
+                        customer_name: customer.user_name,
+                        total_price: order.order_total_price,
+                        status: order.order_status
+                    }
+            )
+            FILTER LENGTH(orders) > 0
+            RETURN {
+                item_name: item.item_title,
+                item_price: item.item_price,
+                orders: orders
+            }
+    )
+    
+    FILTER LENGTH(restaurant_items) > 0
+    RETURN {
+        restaurant_name: user.user_name,
+        total_items_ordered: LENGTH(restaurant_items),
+        items_with_orders: restaurant_items
+    }

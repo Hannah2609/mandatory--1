@@ -1,0 +1,21 @@
+// First, create a full-text index on items collection
+
+
+// Basic full-text search for menu items
+FOR item IN FULLTEXT(items, "item_title", "pizza")
+    RETURN item
+
+
+FOR item IN FULLTEXT(items, "item_title", "pi")
+    RETURN item
+
+
+
+
+
+FOR item IN FULLTEXT(items, "item_title", "pizza")
+    RETURN {
+        title: item.item_title,
+        price: item.item_price,
+        image: item.item_image
+    }

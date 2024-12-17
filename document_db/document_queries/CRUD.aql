@@ -1,0 +1,155 @@
+
+// Example CRUD Operations in AQL
+
+/// CREATE
+// Create a new user
+INSERT {
+    "_key": "user_2",
+    "user_name": "B",
+    "user_last_name": "Bb",
+    "user_email": "b@example.com",
+    "user_password": "password2",
+    "user_created_at": DATE_NOW(),
+    "user_deleted_at": 0,
+    "user_blocked_at": 0,
+    "user_updated_at": 0,
+    "user_verified_at": DATE_NOW(),
+    "user_verification_key": CONCAT("verify_", UUID()),
+    "phones": [
+        { "phone_number": "+4523456789" }
+    ],
+    "addresses": [
+        {
+            "address_line": "Street 2, City B",
+            "postal_code": "2000",
+            "primary_address": true
+        }
+    ],
+    "roles": [
+        {
+            "role_pk": "role_2",
+            "role_name": "customer"
+        }
+    ],
+    "vehicles": [
+        {
+            "vehicle_pk": "vehicle_2",
+            "vehicle_name": "Scooter"
+        }
+    ],
+    "items": [],
+    "orders": []
+} INTO users
+
+// Create a new item
+INSERT {
+    "_key": "item_1",
+    "item_title": "Pizza",
+    "item_price": 12.99,
+    "item_image": "pizza.png",
+    "item_created_at": DATE_NOW(),
+    "item_deleted_at": 0
+} INTO items
+
+
+// Create a new order
+INSERT {
+    "_key": "order_1", // Primary key equivalent
+    "user_id": "user_1",
+    "delivery_address": "Street 2, City B",
+    "restaurant_name": "Restaurant D",
+    "order_total_price": 32.00,
+    "order_status": "delivered",
+    "order_created_at": DATE_NOW(),
+    "order_items": [
+        {
+            "item_id": "item_1",  // Foreign key to the item document
+            "item_quantity": 2,
+            "item_price": 12.99,
+            "item_title": "Pizza"
+        }
+    ]
+} INTO orders
+
+
+
+/// READ
+// Get all users
+FOR user IN users
+    RETURN user
+
+// Get user by _key
+FOR user IN users
+    RETURN user
+
+// Get user by email
+FOR user IN users
+    FILTER user.user_email == "a@example.com"
+    RETURN user
+
+// Get user with their items by _key
+FOR user IN users
+    FILTER user._key == "user_2"
+    RETURN {
+        user_name: user.user_name,
+        items: user.items
+    }
+
+// Get all users with a specific role
+FOR user IN users
+    FILTER LENGTH(
+        FOR role IN user.roles
+        FILTER role.role_name == "admin"
+        RETURN 1
+    ) > 0
+    RETURN user
+
+
+
+/// UPDATE
+// Update user's name 
+UPDATE "user_1" WITH { 
+    user_name: "UpdatedName",
+    user_updated_at: DATE_NOW()
+} IN users
+
+// Add new phone number to user 
+UPDATE "user_1" WITH { 
+    user_name: "UpdatedName",
+    user_updated_at: DATE_NOW(),
+    phones: APPEND("user_1".phones, { "phone_number": "+4599999999" })
+} IN users
+
+// Update/add items in user 
+UPDATE "user_2" WITH {
+    "items": APPEND("user_2".items, "item_3", true),
+    "user_updated_at": DATE_NOW()
+} IN users
+
+
+
+
+/// DELETE 
+// Soft delete (setting deleted timestamp)
+UPDATE "user_1" WITH {
+    user_deleted_at: DATE_NOW(),
+    user_updated_at: DATE_NOW(),
+} IN users
+
+// Hard delete (removing document)
+REMOVE "user_5" IN users
+
+// Delete specific phone number
+UPDATE "user_1" WITH {
+    phones: (
+        FOR phone IN "user_1".phones
+        FILTER phone.phone_number != "+4599999999"
+        RETURN phone
+    )
+} IN users
+
+// Remove specific item from user's items array
+UPDATE "user_2" WITH {
+    items: REMOVE_VALUE("user_2".items, "item_2")
+} IN users
+
