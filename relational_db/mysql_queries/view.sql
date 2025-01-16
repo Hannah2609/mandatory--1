@@ -36,6 +36,26 @@ LEFT JOIN order_items oi ON i.item_pk = oi.item_fk
 GROUP BY i.item_title, i.item_price;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 --- not in db
 -- View showing active delivery partners
 CREATE VIEW active_drivers_view AS

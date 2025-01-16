@@ -110,7 +110,7 @@ VALUES
 
 -- Users Vehicles Junction Table
 CREATE TABLE users_vehicles (
-    user_fk serial,
+    user_fk BIGINT UNSIGNED NOT NULL,
     vehicle_fk BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY (user_fk, vehicle_fk),
     FOREIGN KEY (user_fk) REFERENCES users(user_pk) ON DELETE CASCADE,
@@ -129,7 +129,7 @@ VALUES
 
 -- Users Addresses Table
 CREATE TABLE users_addresses (
-    user_fk serial,
+    user_fk BIGINT UNSIGNED NOT NULL,
     address_line VARCHAR(255),
     postal_code VARCHAR(20),
     primary_address BOOLEAN DEFAULT FALSE,

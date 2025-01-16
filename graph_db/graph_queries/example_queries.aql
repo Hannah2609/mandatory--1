@@ -1,4 +1,4 @@
-// sample vertices (document in collection)
+// simple vertices (document in collection)
 FOR user IN [
     {
         "user_name": "A",
@@ -8,7 +8,7 @@ FOR user IN [
 ]
 INSERT user INTO users
 
-// sample edge (document in edge collection)
+// simple edge (document in edge collection)
 INSERT {
     "_from": "users/user_1",
     "_to": "roles/role_1",

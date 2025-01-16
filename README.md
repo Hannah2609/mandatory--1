@@ -3,22 +3,22 @@
 ## Connection Details
 
 ### MySQL
-- Host: localhost
+- Host: 127.0.0.1
 - Port: 3306
 - Database: company
 - User: root
 - Password: password
-- PhpMyAdmin: http://localhost:9090
+- PhpMyAdmin: http://127.0.0.1:9090
 
 ### ArangoDB (Document Database)
-- Web Interface: http://localhost:8529
-- Host: localhost
+- Web Interface: http://127.0.0.1:8529
+- Host: 127.0.0.1
 - Port: 8529
 - Password: password
 
 ### ArangoDB (Graph Database)
-- Web Interface: http://localhost:8530
-- Host: localhost
+- Web Interface: http://127.0.0.1:8530
+- Host: 127.0.0.1
 - Port: 8530
 - Password: password
 

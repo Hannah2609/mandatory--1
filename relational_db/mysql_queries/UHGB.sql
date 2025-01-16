@@ -31,4 +31,4 @@ SELECT o.user_fk AS customer_user_pk,
     SUM(o.order_total_price) AS total_spent
 FROM orders o
 JOIN users u ON o.user_fk = u.user_pk
-GROUP BY o.user_fk, u.user_name;
+GROUP BY o.user_fk;
